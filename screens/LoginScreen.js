@@ -1,59 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { auth } from '../firebase';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { auth, db } from '../firebase';
 import { useNavigation } from '@react-navigation/core'
-
+import { styles } from '../styles';
+import { collection, getDocs } from 'firebase/firestore';
+import { UserContext } from '../services/UserContext';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const { setUser } = useContext(UserContext);
+
     const navigation = useNavigation()
 
-   useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-        if (user) {
-            navigation.replace("Home")
-        }
-        })
+//    useEffect(() => {
+//         const unsubscribe = auth.onAuthStateChanged(user => {
+//         if (user) {
+//             // navigation.navigate("AppContainer")
+//         }
+//         })
 
-      return unsubscribe
-    }, [])
+//       return unsubscribe
+//     }, [])
 
-    const handleSignUp = () => {
-        auth
-        .createUserWithEmailAndPassword(email, password)
-        .then(userCredentials => {
-            const user = userCredentials.user;
-            console.log('Registered in with:', user.email);
-        })
-        .catch(error => alert(error.message))
-    }
-
-    const handleLogin = () => {
-        auth
+    const handleLogin = async () => {
+        const response = await auth
         .signInWithEmailAndPassword(email,password)
-        .then(userCredentials => {
-            const user = userCredentials.user;
-            console.log('Logged in with:', user.email);
-        })
-        .catch(error => alert(error.message))
+
+        if (response) {
+            const colRef = collection(db, 'users')
+            const snapshots = await getDocs(colRef)
+            const docs = snapshots.docs
+            .map((doc => {
+                const data = doc.data()
+                data.id = doc.id
+                return data
+            }))
+            .filter(element => element.email.toLowerCase().trim() === auth.currentUser.email.toLowerCase().trim())
+            if (docs.length > 0)
+                setUser(docs[0])
+        }
     }
 
     return (
-        <KeyboardAvoidingView style={loginStyle.container} behavior="padding">
-            <View style={loginStyle.inputContainer}>
-                <TextInput placeholder='Email' value={email} onChangeText={text => {setEmail(text)}} style={loginStyle.input}></TextInput>
-                <TextInput placeholder='Password' value={password} onChangeText={text => {setPassword(text)}} style={loginStyle.input} secureTextEntry></TextInput>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <View style={styles.buttonContainer}>
+                <View style={styles.inputContainer}>
+                <TextInput placeholder='Email' value={email} onChangeText={text => {setEmail(text)}} style={styles.input}></TextInput>
+                <TextInput placeholder='Password' value={password} onChangeText={text => {setPassword(text)}} style={styles.input} secureTextEntry></TextInput>
             </View>
-            <View style={loginStyle.buttonContainer}>
-                <TouchableOpacity onPress={handleLogin} style={loginStyle.button}>
-                    <Text style={loginStyle.buttonText}>Login</Text>
+                <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                    <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleSignUp} style={[loginStyle.button, loginStyle.buttonOutline]}>
-                    <Text style={loginStyle.buttonOutlineText}>Register</Text>
-                </TouchableOpacity>
+                <Text>Don't have a manager account?</Text>
+                <Button title="Sign up Here." onPress={() => navigation.navigate("Register")} />
             </View>
         </KeyboardAvoidingView>
     )
@@ -61,50 +62,3 @@ const LoginScreen = () => {
 
 export default LoginScreen
 
-export const loginStyle = StyleSheet.create({
-    container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  inputContainer: {
-    width: '75%',
-    marginTop: 100
-  },
-  input: {
-    backgroundColor: 'white',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 50,
-    marginTop: 5,
-  },
-  buttonContainer: {
-    width: '45%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-  },
-  button: {
-    backgroundColor: '#00c04b',
-    width: '100%',
-    padding: 12,
-    borderRadius: 50,
-    alignItems: 'center',
-  },
-  buttonOutline: {
-    backgroundColor: 'white',
-    marginTop: 5,
-    borderColor: '#00c04b',
-    borderWidth: 2,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  buttonOutlineText: {
-    color: '#00c04b',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-});

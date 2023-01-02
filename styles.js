@@ -1,3 +1,4 @@
+import { startAfter } from "firebase/firestore";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -52,5 +53,30 @@ export const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 50,
     alignItems: 'center',
+    signOut: {
+      justifyContent:'flex-end',
+      alignItems:'flex-end'
+    }
+  },
+  buttonAddProduct: {
+    backgroundColor: '#00c04b',
+    width: '50%',
+    padding: 10,
+    borderRadius: 50,
+    alignItems: 'center',
+    margin: 5,
+    // justifyContent:'flex-end',
+    // alignItems:'flex-end'
+  },
+  buttonEnd: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 36
+  },
+  buttonsView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around"
   }
+
 });

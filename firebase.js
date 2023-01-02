@@ -5,6 +5,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { getFirestore } from 'firebase/firestore'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -26,5 +27,7 @@ if (firebase.apps.length === 0) {
 
 const auth = firebase.auth();
 
-export { auth }
+const db = getFirestore(app);
+
+export { auth, db }
 // const app = initializeApp(firebaseConfig);
