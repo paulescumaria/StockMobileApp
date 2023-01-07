@@ -1,39 +1,12 @@
 import * as React from "react";
-import {
-  DataTable,
-  Dialog,
-  TextInput,
-  IconButton,
-  Modal,
-  Portal,
-  Text,
-  Button,
-  Provider,
-  Divider,
-  Menu,
-} from "react-native-paper";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import {DataTable, Dialog, TextInput, IconButton, Modal, Portal, Text, Button, Provider} from "react-native-paper";
+import { View, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import { styles } from "../styles";
+import { stylesDropdown } from "../stylesDropdown";
 import { ScrollView } from "react-native-gesture-handler";
 import { MultiSelect } from "react-native-element-dropdown";
-import {
-  doc,
-  setDoc,
-  getDocs,
-  getDoc,
-  collection,
-  firebase,
-  updateDoc,
-  firestore,
-  deleteField,
-  deleteDoc,
-  documentId,
-  addDoc,
-  arrayUnion,
-  arrayRemove,
-  FieldValue,
-} from "firebase/firestore";
+import {  doc,  setDoc, getDocs, collection, updateDoc, deleteDoc, arrayUnion} from "firebase/firestore";
 import { db } from "../firebase";
 
 const ProductsList = () => {
@@ -368,68 +341,3 @@ const ProductsList = () => {
 
 export default ProductsList;
 
-const stylesDropdown = StyleSheet.create({
-  container: { padding: 16 },
-  dropdown: {
-    height: 50,
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 12,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 14,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  item: {
-    padding: 17,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  selectedStyle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 14,
-    backgroundColor: "white",
-    shadowColor: "#000",
-    marginTop: 8,
-    marginRight: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
-  },
-  textSelectedStyle: {
-    marginRight: 5,
-    fontSize: 16,
-  },
-});

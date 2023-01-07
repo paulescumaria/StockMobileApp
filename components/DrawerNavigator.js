@@ -5,6 +5,7 @@ import HomeScreen from "../screens/HomeScreen";
 import StockScreen from "../screens/StockScreen";
 import WaiterScreen from "../screens/WaiterScreen";
 import ProductsList from "../screens/ProductsList";
+import SelectTables from "../screens/SelectTables";
 import Menu from "./Menu";
 
 const Drawer = createDrawerNavigator();
@@ -27,6 +28,7 @@ export default function DrawerNavigator() {
       ) : (
         <>
           <Drawer.Screen name="Home" component={HomeScreen} />
+          <Drawer.Screen name="SelectTables" component={SelectTables} />
         </>
       )}
     </Drawer.Navigator>

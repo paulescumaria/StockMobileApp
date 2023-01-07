@@ -16,12 +16,7 @@ import {
   doc,
   setDoc,
   getDocs,
-  getDoc,
   collection,
-  firebase,
-  updateDoc,
-  firestore,
-  deleteField,
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
