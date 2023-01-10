@@ -3,13 +3,13 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 150,
   },
   inputContainer: {
     width: '75%',
-    marginTop: 100
   },
   input: {
     backgroundColor: 'white',
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     marginTop: 5,
   },
   buttonContainer: {
-    width: '45%',
+    width: '60%',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
@@ -47,6 +47,20 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
   },
+
+  homeText: {
+    fontSize: 15,
+    alignItems: 'flex-start',
+    marginTop: 10,
+    fontWeight: '20%'
+  },
+
+  homeContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   buttonSignOut: {
     backgroundColor: '#00c04b',
     width: '50%',
@@ -58,15 +72,17 @@ export const styles = StyleSheet.create({
       alignItems:'flex-end'
     }
   },
+
   buttonAddProduct: {
     backgroundColor: '#00c04b',
     width: '50%',
-    padding: 10,
+    padding: 5,
     borderRadius: 50,
     alignItems: 'center',
-    margin: 5,
-    // justifyContent:'flex-end',
-    // alignItems:'flex-end'
+    marginTop: 30,
+    position: 'relative',
+    left: '25%',
+    right: '25%',
   },
   buttonEnd: {
     flex: 1,

@@ -14,16 +14,6 @@ const LoginScreen = () => {
 
     const navigation = useNavigation()
 
-//    useEffect(() => {
-//         const unsubscribe = auth.onAuthStateChanged(user => {
-//         if (user) {
-//             // navigation.navigate("AppContainer")
-//         }
-//         })
-
-//       return unsubscribe
-//     }, [])
-
     const handleLogin = async () => {
         const response = await auth
         .signInWithEmailAndPassword(email,password)
@@ -45,14 +35,16 @@ const LoginScreen = () => {
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
-            <View style={styles.buttonContainer}>
-                <View style={styles.inputContainer}>
+            <View style={styles.inputContainer}>
                 <TextInput placeholder='Email' value={email} onChangeText={text => {setEmail(text)}} style={styles.input}></TextInput>
                 <TextInput placeholder='Password' value={password} onChangeText={text => {setPassword(text)}} style={styles.input} secureTextEntry></TextInput>
             </View>
+            <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={handleLogin} style={styles.button}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
+                <Text></Text>
+                <Text></Text>
                 <Text>Don't have a manager account?</Text>
                 <Button title="Sign up Here." onPress={() => navigation.navigate("Register")} />
             </View>

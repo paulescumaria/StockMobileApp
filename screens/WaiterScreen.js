@@ -8,7 +8,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 const WaiterScreen = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('123456');
     const [name, setName] = useState('')
     const { setUser } = useContext(UserContext);
 
@@ -18,8 +18,6 @@ const WaiterScreen = () => {
         .then(userCredentials => {
             const email = userCredentials.user.email;
             console.log('Registered in with:', email);
-
-            setPassword('123456')
 
              setDoc(doc(db, "users", auth.currentUser.uid), {
                 name: name,
@@ -34,19 +32,22 @@ const WaiterScreen = () => {
                 name: name,
                 email: email,
                 isManager: false})
+
             })
         .catch(error => alert(error.message))
         console.log('Password: ', password)   
     }
     return (
-        <KeyboardAvoidingView>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.inputContainer}>
                 <TextInput placeholder='Name' value={name} onChangeText={text => {setName(text)}} style={styles.input}></TextInput>
                 <TextInput placeholder='Email' value={email} onChangeText={text => {setEmail(text)}} style={styles.input}></TextInput>
             </View>
-            <TouchableOpacity onPress={addWaiter} style={[styles.button, styles.buttonOutline]}>
+            <View  style={styles.buttonContainer}>
+               <TouchableOpacity onPress={addWaiter} style={[styles.button, styles.buttonOutline]}>
                     <Text style={styles.buttonOutlineText}>Add Waiter</Text>
                 </TouchableOpacity>
+            </View>
         </KeyboardAvoidingView>
     )
 }

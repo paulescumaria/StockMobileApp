@@ -6,6 +6,7 @@ import StockScreen from "../screens/StockScreen";
 import WaiterScreen from "../screens/WaiterScreen";
 import ProductsList from "../screens/ProductsList";
 import SelectTables from "../screens/SelectTables";
+import StockPrediction from "../screens/StockPrediction";
 import Menu from "./Menu";
 
 const Drawer = createDrawerNavigator();
@@ -24,6 +25,7 @@ export default function DrawerNavigator() {
           <Drawer.Screen name="Stock" component={StockScreen} />
           <Drawer.Screen name="Waiters" component={WaiterScreen} />
           <Drawer.Screen name="Products" component={ProductsList} />
+          <Drawer.Screen name="Stock Prediction" component={StockPrediction} />
         </>
       ) : (
         <>

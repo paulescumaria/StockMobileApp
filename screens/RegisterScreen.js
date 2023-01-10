@@ -48,13 +48,13 @@ const RegisterScreen = () => {
                 <TextInput placeholder='Email' value={email} onChangeText={text => {setEmail(text)}} style={styles.input}></TextInput>
                 <TextInput placeholder='Password' value={password} onChangeText={text => {setPassword(text)}} style={styles.input} secureTextEntry></TextInput>
             </View>
-            <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={handleSignUp} style={[styles.button, styles.buttonOutline]}>
                     <Text style={styles.buttonOutlineText}>Sign Up</Text>
                 </TouchableOpacity>
+            </View>
         </KeyboardAvoidingView>
     )
-
-
 }
 
 export default RegisterScreen

@@ -208,7 +208,8 @@ const SelectTables = () => {
   const emitRecepit = async () => {
     console.log("emit the recipe")
     if (selectedTable && selectedIndexTable) {
-      const getDate = new Date().toLocaleDateString('en-GB').split('/').join('-');
+      let getDate = new Date().toISOString().slice(0,10).split('-');
+      getDate = getDate[1] + '-' + getDate[2] + '-' + getDate[0];
 
       await setDoc(doc(db, "orders-complete", getDate), {}, { merge: true })
 
@@ -217,116 +218,127 @@ const SelectTables = () => {
       const docData = snapshots.data();
       console.log(docData);
       if (docData) {
-        if (docData.hasOwnProperty(selectedIndexTable)) {
-          const oldOrdersCompleted = docData[selectedIndexTable];
-          let newOrdersCompleted = selectedTable;
-          
-          if (oldOrdersCompleted?.length > 0) {
-            newOrdersCompleted = newOrdersCompleted.concat(oldOrdersCompleted);
-          }
+        selectedTable.map(async element => {
+          const product = Object.keys(element)[0];
+          if (docData.hasOwnProperty(product)) {
+            const oldValue = docData[product];
+            let newValue = 0;
+            
+            newValue = (+oldValue) + (+element[product])
 
-          await updateDoc(doc(
-            db,
-            "orders-complete",
-            getDate
-          ), {
-            [selectedIndexTable]: newOrdersCompleted
-          })
-            .then(async () => {
-              console.log("order data save");
-
-              await updateDoc(doc(
-                db,
-                "orders",
-                'table'
-              ), {
-                [selectedIndexTable]: []
-              })
-                .then(async () => {
-                  console.log("order data save");
-
-                  setSelected([]);
-                  setSelectedIndexTable(0);
- 
-                  await getData();
-
-                  hideDialogView();   
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
- 
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          await updateDoc(doc(
-            db,
-            "orders-complete",
-            getDate
-          ), {
-            [selectedIndexTable]: selectedTable
-          })
-            .then(async () => {
-              await updateDoc(doc(
-                db,
-                "orders",
-                'table'
-              ), {
-                [selectedIndexTable]: []
-              })
-                .then(async () => {
-                  console.log("order data save");
-
-                  setSelected([]);
-                  setSelectedIndexTable(0);
- 
-                  await getData();
-
-                  hideDialogView();   
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
-      } else {
-        await updateDoc(doc(
-          db,
-          "orders-complete",
-          getDate
-        ), {
-          [selectedIndexTable]: selectedTable
-        })
-          .then(async () => {
             await updateDoc(doc(
               db,
-              "orders",
-              'table'
+              "orders-complete",
+              getDate
             ), {
-              [selectedIndexTable]: []
-            })
+              [product]: +newValue
+            }, { merge: true })
               .then(async () => {
                 console.log("order data save");
 
-                setSelected([]);
-                setSelectedIndexTable(0);
+                await updateDoc(doc(
+                  db,
+                  "orders",
+                  'table'
+                ), {
+                  [selectedIndexTable]: []
+                })
+                  .then(async () => {
+                    console.log("order data save");
 
-                await getData();
+                    setSelected([]);
+                    setSelectedIndexTable(0);
+  
+                    await getData();
 
-                hideDialogView();   
+                    hideDialogView();   
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+  
               })
               .catch((error) => {
                 console.log(error);
               });
+          } else {
+            selectedTable.map(async element => {
+              const product = Object.keys(element)[0];
+              await updateDoc(doc(
+                db,
+                "orders-complete",
+                getDate
+              ), {
+                [product]: +element[product]
+              })
+                .then(async () => {
+                  await updateDoc(doc(
+                    db,
+                    "orders",
+                    'table'
+                  ), {
+                    [selectedIndexTable]: []
+                  })
+                    .then(async () => {
+                      console.log("order data save");
+
+                      setSelected([]);
+                      setSelectedIndexTable(0);
+    
+                      await getData();
+
+                      hideDialogView();   
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+
+          }
+        })
+
+      } else {
+        selectedTable.map(async element => {
+          const product = Object.keys(element)[0];
+
+          await updateDoc(doc(
+            db,
+            "orders-complete",
+            getDate
+          ), {
+            [product]: +element[product]
           })
-          .catch((error) => {
-            console.log(error);
-          });
+            .then(async () => {
+              await updateDoc(doc(
+                db,
+                "orders",
+                'table'
+              ), {
+                [selectedIndexTable]: []
+              })
+                .then(async () => {
+                  console.log("order data save");
+
+                  setSelected([]);
+                  setSelectedIndexTable(0);
+
+                  await getData();
+
+                  hideDialogView();   
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+
       }
 
     }

@@ -11,12 +11,12 @@ const HomeScreen = () => {
 const {user} = useContext(UserContext);
 
   return (
-    <View style={styles.container}>
-      <Text>Name: {user?.name}</Text>
-      <Text>Email: {user?.email}</Text>
+    <View style={styles.homeContainer}>
+      <Text style={styles.homeConta}> Name: {user?.name}</Text>
+      <Text style={styles.homeText}> Email: {user?.email}</Text>
       {user?.isManager && 
             <>
-              <Text>Company: {user?.company}</Text>
+              <Text style={styles.homeText}>Company: {user?.company}</Text>
             </>
           }
     </View>
